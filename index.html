@@ -1,63 +1,112 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yang Kita Bicarakan — pukul dua dini hari</title>
-<link rel="stylesheet" href="style-v17.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>yang kita bicarakan — pukul dua dini hari</title>
+<link rel="stylesheet" href="style-v18.css">
 </head>
 <body>
 <header class="site-header">
-  <a class="brand" href="index.html">yang kita bicarakan<br><em>pukul dua dini hari</em></a>
-  <nav class="nav"><a href="#puisi">PUISI</a><a href="#jurnal">JURNAL</a><a href="#tentang">TENTANG</a><a href="#arsip">ARSIP</a></nav>
-  <button class="icon-btn" id="themeToggle" aria-label="Ubah tema">☾</button>
+  <a class="brand" href="index.html">yang kita bicarakan <span>/</span><em>pukul dua dini hari</em></a>
+  <nav class="nav">
+    <a href="#puisi">PUISI</a><a href="#jurnal">JURNAL</a><a href="#arsip">ARSIP</a><a href="#tentang">TENTANG</a>
+  </nav>
+  <button class="theme-btn" id="themeToggle" aria-label="Ubah tema">◐</button>
 </header>
 
 <main>
 <section class="hero wrap">
-  <div class="hero-left">
-    <div class="time">02:00 <span>—</span> 02:59</div>
-    <div class="kicker">SEBUAH RUANG UNTUK MENULIS</div>
-    <h1>yang kita<br><span>bicarakan</span></h1>
-    <div class="hero-rule"></div>
-    <p class="lead">Beberapa hal hanya berani kita katakan ketika dunia sudah mulai diam.</p>
-    <a class="red-link" href="#puisi">masuk ke dalam <span>→</span></a>
+  <div class="hero-main">
+    <div class="eyebrow">02:00 — 02:59</div>
+    <p class="micro">SEBUAH RUANG UNTUK MENULIS</p>
+    <h1>yang kita<br><i>bicarakan</i></h1>
+    <div class="hairline"></div>
+    <p class="hero-lead">Beberapa hal hanya berani kita katakan ketika dunia sudah mulai diam.</p>
+    <a class="maroon-link" href="#puisi">masuk ke dalam <span>↘</span></a>
   </div>
-  <aside class="midnight-note">
-    <div class="note-time">02:17</div>
-    <p>Mungkin kita belum selesai.<br>Mungkin memang<br>tidak pernah.</p>
-    <a class="red-link" href="#arsip">baca sesuatu secara acak <span>→</span></a>
+  <aside class="hero-note">
+    <div class="note-clock">02:17</div>
+    <p>Mungkin kita belum selesai.<br><i>Mungkin memang tidak pernah.</i></p>
+    <button class="random-link" id="randomPost">baca sesuatu secara acak <span>→</span></button>
   </aside>
 </section>
 
-<section id="puisi" class="writing-section wrap">
-  <div class="section-label"><span class="section-no">01</span><div><h2>PUISI</h2><p>Yang terasa,<br>tapi tak terucap.</p><a class="red-link" href="#arsip">lihat semua →</a></div></div>
-  <div class="writing-list"><div data-featured-poem class="feature"><p>Memuat tulisan…</p></div><div data-poem-list class="list"></div></div>
+<section id="puisi" class="writing wrap">
+  <div class="section-index">01</div>
+  <div class="section-body">
+    <div class="section-head">
+      <div><p class="micro">YANG TERASA, TAPI TAK TERUCAP.</p><h2>Puisi</h2></div>
+      <a href="#arsip" class="quiet-link">semua puisi →</a>
+    </div>
+    <div data-featured-poem class="featured"><p>Memuat tulisan…</p></div>
+    <div data-home-poem-list class="home-list"></div>
+  </div>
 </section>
 
-<section id="jurnal" class="writing-section wrap">
-  <div class="section-label"><span class="section-no">02</span><div><h2>JURNAL</h2><p>Catatan dari<br>hari-hari biasa.</p><a class="red-link" href="#arsip">lihat semua →</a></div></div>
-  <div data-journal-list class="journal-list"><p>Memuat jurnal…</p></div>
+<section id="jurnal" class="writing writing-journal wrap">
+  <div class="section-index">02</div>
+  <div class="section-body">
+    <div class="section-head">
+      <div><p class="micro">CATATAN DARI HARI-HARI BIASA.</p><h2>Jurnal</h2></div>
+      <a href="#arsip" class="quiet-link">semua jurnal →</a>
+    </div>
+    <div data-journal-list class="journal-grid"><p>Memuat jurnal…</p></div>
+  </div>
 </section>
 
-<section class="quote-box wrap">
-  <div class="quote-mark">“</div>
-  <div class="quote-copy"><p>Jika kau sampai di sini,<br>mungkin ada bagian dari diriku<br>yang sedang kau cari.</p><span></span></div>
+<section class="interlude wrap">
+  <div class="interlude-mark">“</div>
+  <div>
+    <p>Jika kau sampai di sini,<br>mungkin ada bagian dari diriku<br>yang sedang kau cari.</p>
+    <span>— catatan yang tidak selesai</span>
+  </div>
 </section>
 
 <section id="arsip" class="archive wrap">
-  <div class="archive-head"><div><div class="kicker">ARSIP</div><h2>Semua tulisan.</h2></div><p>Cari sesuatu yang pernah ditulis<br>di antara malam-malam yang lewat.</p></div>
-  <input id="poem-search" class="search" data-poem-search placeholder="cari judul, tema, atau kata…">
-  <div class="filters"><button data-poem-filter="Semua" class="active">Semua</button><button data-poem-filter="Puisi">Puisi</button><button data-poem-filter="Jurnal">Jurnal</button><button data-poem-filter="Rindu">Rindu</button><button data-poem-filter="Kehilangan">Kehilangan</button><button data-poem-filter="Pulang">Pulang</button><button data-poem-filter="Malam">Malam</button></div>
-  <div data-poem-list class="archive-list"></div>
+  <div class="archive-title">
+    <p class="micro">03 — ARSIP</p>
+    <h2>Yang pernah<br>ditulis.</h2>
+    <p>Cari sesuatu di antara malam-malam yang lewat.</p>
+  </div>
+  <div class="archive-content">
+    <input id="poem-search" class="search" data-poem-search placeholder="cari judul, tema, atau kata…" autocomplete="off">
+    <div class="filters">
+      <button data-poem-filter="Semua" class="active">Semua</button>
+      <button data-poem-filter="Puisi">Puisi</button>
+      <button data-poem-filter="Jurnal">Jurnal</button>
+      <button data-poem-filter="Rindu">Rindu</button>
+      <button data-poem-filter="Kehilangan">Kehilangan</button>
+      <button data-poem-filter="Pulang">Pulang</button>
+      <button data-poem-filter="Malam">Malam</button>
+    </div>
+    <div data-archive-list class="archive-list"></div>
+  </div>
 </section>
 
 <section id="tentang" class="about wrap">
-  <div><div class="kicker">TENTANG</div><h2>Sebuah rumah<br>untuk tulisan.</h2></div>
-  <div class="about-copy"><p>Aku membuat tempat ini untuk hal-hal yang biasanya kita simpan.</p><p>Tentang orang yang pernah kita tunggu. Tentang rumah yang pernah kita tinggalkan. Tentang percakapan yang berhenti sebelum selesai.</p><p>Sebagian tulisan lahir pukul dua dini hari. Sebagian lainnya baru berani ditulis ketika pagi datang.</p><p><em>Kalau kau menemukan sesuatu di sini yang terasa seperti pernah kau alami, mungkin kita pernah berada di malam yang sama.</em></p><p>— Bobby Dustiansyah</p></div>
+  <div class="section-index">04</div>
+  <div class="about-body">
+    <p class="micro">TENTANG RUANG INI</p>
+    <h2>Sebuah rumah<br>untuk tulisan.</h2>
+    <div class="about-copy">
+      <p>Aku membuat tempat ini untuk hal-hal yang biasanya kita simpan.</p>
+      <p>Tentang orang yang pernah kita tunggu. Tentang rumah yang pernah kita tinggalkan. Tentang percakapan yang berhenti sebelum selesai.</p>
+      <p>Sebagian tulisan lahir pukul dua dini hari. Sebagian lainnya baru berani ditulis ketika pagi datang.</p>
+      <p class="accent">Kalau kau menemukan sesuatu di sini yang terasa seperti pernah kau alami, mungkin kita pernah berada di malam yang sama.</p>
+      <p>— Bobby Dustiansyah</p>
+    </div>
+  </div>
 </section>
 </main>
-<footer><div><strong>yang kita bicarakan</strong><em>pukul dua dini hari</em></div><div class="footer-right"><span>TENTANG</span><span>ARSIP</span><span>KONTAK</span><span>© 2026 — Semua hak dilindungi.</span></div></footer>
+
+<footer class="footer wrap">
+  <div><strong>yang kita bicarakan</strong><em>pukul dua dini hari</em></div>
+  <div>© 2026</div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-<script src="public-v14.js"></script>
-</body></html>
+<script src="public-v18.js"></script>
+</body>
+</html>
