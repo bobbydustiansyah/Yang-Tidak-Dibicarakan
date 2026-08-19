@@ -1,15 +1,30 @@
-YANG KITA BICARAKAN — V5 ONLINE
+YANG KITA BICARAKAN — V6
+========================
 
-Isi:
-- index.html        website publik
-- login.html        login Supabase Auth
-- admin.html        Ruang Tulis (protected by Supabase session)
-- supabase-config.js konfigurasi Supabase public URL + publishable key
-- app.js / style.css desain
-- poem/              contoh halaman puisi
+Versi ini membuat website publik mengambil puisi langsung dari Supabase.
 
-PENTING:
-1. Database `public.poems` dan RLS harus sudah dibuat di Supabase.
-2. Jangan pernah memasukkan Secret Key / Service Role Key ke file frontend.
-3. Upload seluruh isi folder ini ke repository GitHub, menggantikan versi lama.
-4. Setelah GitHub Pages selesai deploy, buka /login.html untuk menguji login.
+Alur:
+Ruang Tulis → Supabase (status published) → Website publik
+
+File utama:
+- index.html       = homepage dinamis
+- public.js        = mengambil puisi published dari Supabase
+- puisi.html       = halaman baca puisi dinamis
+- supabase-config.js = konfigurasi project
+- admin.html       = dashboard lama
+- style.css        = desain
+
+CARA UPLOAD KE GITHUB
+1. Upload/replace file berikut di repository:
+   index.html
+   public.js
+   puisi.html
+   supabase-config.js
+2. Jangan hapus admin.html dan style.css.
+3. Commit changes.
+4. Tunggu GitHub Pages 1–2 menit.
+5. Buka:
+   https://bobbydustiansyah.github.io/Yang-Tidak-Dibicarakan/
+
+Catatan:
+RLS Supabase harus mengizinkan SELECT untuk baris status='published'.

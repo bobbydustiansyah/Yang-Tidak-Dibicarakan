@@ -1,9 +1,4 @@
-// Supabase public configuration.
-// Publishable keys are intended for browser use.
-// Database security is enforced with Row Level Security (RLS).
-const SUPABASE_URL = 'https://yewaudnwthgmxivxlrkq.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_rHYXOaAtrrrNzSrbszKEKw_w1lE10TY';
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+// Konfigurasi Supabase untuk website publik + Ruang Tulis
+// Publishable/anon key aman digunakan di frontend selama RLS sudah aktif.
+window.SUPABASE_URL = "https://yewaudnwthgmxivxlrkq.supabase.co";
+window.SUPABASE_KEY = "sb_publishable_rHYXOaAtrrrNzSrbszKEKw_w1lE10TY";
