@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arsip — yang kita bicarakan</title>
+<link rel="stylesheet" href="archive-v20.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html">yang kita bicarakan <span>/</span><em>pukul dua dini hari</em></a>
+  <nav><a href="index.html#puisi">PUISI</a><a href="index.html#jurnal">JURNAL</a><a class="active" href="arsip.html">ARSIP</a><a href="index.html#tentang">TENTANG</a></nav>
+  <button id="themeToggle" aria-label="Ubah tema">◐</button>
+</header>
+
+<main>
+<section class="archive-hero wrap">
+  <div class="eyebrow">03 — ARSIP</div>
+  <h1>Yang pernah<br><i>ditulis.</i></h1>
+  <p>Semua yang pernah tinggal di ruang ini, dikumpulkan berdasarkan waktu dan ingatan.</p>
+</section>
+
+<section class="archive-panel wrap">
+  <aside>
+    <div class="small-label">CARI</div>
+    <input id="search" placeholder="judul, tema, kata…" autocomplete="off">
+    <div class="small-label filter-label">FILTER</div>
+    <div class="filters">
+      <button class="active" data-filter="semua">Semua</button>
+      <button data-filter="puisi">Puisi</button>
+      <button data-filter="jurnal">Jurnal</button>
+    </div>
+  </aside>
+  <div class="results">
+    <div class="result-head"><span id="count">memuat…</span><span>TERBARU → LAMA</span></div>
+    <div id="archiveList"></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer wrap">
+  <div><strong>yang kita bicarakan</strong><em>pukul dua dini hari</em></div>
+  <div>© 2026</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="archive-v20.js"></script>
+</body>
+</html>
