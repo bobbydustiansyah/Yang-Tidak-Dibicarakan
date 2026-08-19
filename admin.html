@@ -128,6 +128,7 @@ function getClient(){
 }
 let db;
 let editingId=null;
+let currentUser=null;
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -139,6 +140,7 @@ async function boot(){
     db=getClient();
     const {data:{session}}=await db.auth.getSession();
     if(!session){ location.href="login.html"; return; }
+    currentUser=session.user;
     $("account").textContent=session.user.email||"penulis";
     await load();
   }catch(e){$("status").textContent=e.message}
@@ -172,13 +174,18 @@ async function savePost(status){
   if(!title||!content){$("status").textContent="Judul dan isi tulisan harus diisi.";return}
   const type=$("type").value, theme=$("theme").value;
   const payload={title,content,type,theme,slug:slugify(title),status};
+  if(!editingId && currentUser?.id) payload.user_id=currentUser.id;
   if(status==="published") payload.published_at=new Date().toISOString();
   else payload.published_at=null;
   $("status").textContent="Menyimpan...";
   let res;
   if(editingId) res=await db.from("poems").update(payload).eq("id",editingId);
   else res=await db.from("poems").insert(payload);
-  if(res.error){$("status").textContent=res.error.message;return}
+  if(res.error){
+    console.error("Supabase save error:",res.error);
+    $("status").textContent=`Gagal menyimpan: ${res.error.message}${res.error.details?" — "+res.error.details:""}`;
+    return;
+  }
   $("status").textContent=status==="published"?"Tulisan berhasil diterbitkan.":"Draft berhasil disimpan.";
   reset(); await load();
 }
