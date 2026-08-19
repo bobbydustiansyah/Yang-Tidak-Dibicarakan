@@ -1,179 +1,194 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ruang Tulis — Yang Kita Bicarakan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<style>
-.workspace{max-width:980px}
-.authbar{display:flex;align-items:center;gap:14px;justify-content:flex-end;font:13px "DM Sans",sans-serif}
-.authbar button{border:1px solid var(--line);background:none;padding:8px 12px;cursor:pointer}
-.editor{display:grid;gap:14px}
-.editor input,.editor textarea,.editor select{font:inherit;border:1px solid var(--line);background:transparent;padding:14px;box-sizing:border-box}
-.editor input{font:32px "Playfair Display",serif}
-.editor textarea{min-height:360px;line-height:1.8;resize:vertical}
-.editor select{font:14px "DM Sans",sans-serif;width:max-content}
-.editor-actions{display:flex;gap:10px;flex-wrap:wrap}
-.status{font:14px "DM Sans",sans-serif;min-height:20px}
-.cards{display:grid;gap:10px}
-.poem-card{border-top:1px solid var(--line);padding:18px 0;display:flex;justify-content:space-between;gap:15px;align-items:center}
-.poem-card strong{font-family:"Playfair Display",serif;font-size:21px}
-.poem-card small{display:block;font:12px "DM Sans",sans-serif;opacity:.7;margin-top:5px}
-.card-actions{display:flex;gap:7px}
-.card-actions button{font:12px "DM Sans",sans-serif;padding:8px 10px;border:1px solid var(--line);background:none;cursor:pointer}
-@media(max-width:700px){.poem-card{display:block}.card-actions{margin-top:12px}.editor input{font-size:26px}}
-</style>
-</head>
-<body class="admin">
-<aside>
-  <a class="brand" href="index.html">yang kita bicarakan<em>pukul dua dini hari</em></a>
-  <a href="#editor">◦ Tulis Puisi</a><a href="#drafts">◦ Draft</a><a href="#published">◦ Terbit</a>
-  <a href="index.html">◦ Lihat Website</a>
-</aside>
-<main class="workspace">
-  <div class="workspace-top">
-    <p class="eyebrow">ruang tulis</p>
-    <div class="authbar"><span id="userEmail"></span><button id="logout">Keluar</button><button id="theme" class="icon">☾</button></div>
-  </div>
-  <h1>Selamat malam.</h1>
-  <p class="muted">Apa yang ingin kamu tulis?</p>
-
-  <section id="editor" class="editor">
-    <input id="title" placeholder="Judul tulisan">
-    <select id="tag"><option>Rindu</option><option>Kehilangan</option><option>Pulang</option><option>Malam</option><option>Lainnya</option></select>
-    <textarea id="body" placeholder="Tulis puisimu di sini..."></textarea>
-    <div class="editor-actions">
-      <button class="secondary" id="save">Simpan Draft</button>
-      <button class="button" id="publish">Terbitkan</button>
-      <button class="secondary" id="clear">Tulisan Baru</button>
-    </div>
-    <div id="status" class="status"></div>
-  </section>
-
-  <section id="drafts"><h2>Draft</h2><div id="draftBox" class="cards"></div></section>
-  <section id="published"><h2>Terbit</h2><div id="publishedBox" class="cards"></div></section>
-</main>
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<style>
+:root{--paper:#f5f0e6;--ink:#191714;--muted:#777166;--line:#d5cec1;--card:#eee7da}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+a{color:inherit;text-decoration:none}.shell{max-width:1180px;margin:auto;padding:28px 28px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:20px}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.logout{border:0;background:none;font:inherit;cursor:pointer}
+h1,h2,.title{font-family:"Playfair Display",Georgia,serif;font-weight:400}
+h1{font-size:clamp(48px,7vw,84px);line-height:.98;margin:70px 0 18px}
+h2{font-size:34px;margin:0 0 22px}.muted{color:var(--muted);font-size:18px}
+.editor{margin-top:42px;background:var(--card);border:1px solid var(--line);padding:30px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--ink)}
+input{font-family:"Playfair Display",Georgia,serif;font-size:32px;padding:12px 0;border-width:0 0 1px}
+select{padding:13px;margin-top:22px;background:var(--paper)}
+textarea{min-height:360px;margin-top:22px;padding:20px;line-height:1.8;resize:vertical}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button.action{padding:13px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+button.secondary{padding:13px 20px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.status{min-height:24px;margin-top:14px;color:var(--muted)}
+section.list{margin-top:70px}
+.group{margin-bottom:45px}.group-title{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px}
+.item{display:flex;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid var(--line)}
+.item-main{min-width:0}.item-title{font-family:"Playfair Display",Georgia,serif;font-size:27px}.meta{font-size:13px;color:var(--muted);margin-top:6px}
+.item-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.item-actions button{border:1px solid var(--line);background:transparent;padding:8px 11px;cursor:pointer}
+.danger{color:#8b4036}
+.hidden{display:none!important}
+@media(max-width:650px){.shell{padding:20px 18px 55px}.top{padding-bottom:15px}h1{margin-top:55px}.editor{padding:20px}input{font-size:27px}.item{display:block}.item-actions{margin-top:14px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+  <div>
+    <div class="eyebrow">Ruang Tulis</div>
+    <div id="account" class="muted" style="font-size:13px;margin-top:6px">memuat...</div>
+  </div>
+  <button class="logout" id="logout">Keluar</button>
+</header>
+
+<h1>Selamat malam.</h1>
+<p class="muted">Apa yang ingin kamu tulis?</p>
+
+<section class="editor">
+  <input id="title" placeholder="Judul tulisan" autocomplete="off">
+  <select id="type">
+    <option value="puisi">Puisi</option>
+    <option value="jurnal">Jurnal</option>
+  </select>
+  <select id="theme">
+    <option value="Rindu">Rindu</option>
+    <option value="Kehilangan">Kehilangan</option>
+    <option value="Pulang">Pulang</option>
+    <option value="Malam">Malam</option>
+    <option value="Catatan">Catatan</option>
+    <option value="Lainnya">Lainnya</option>
+  </select>
+  <textarea id="content" placeholder="Tulis di sini..."></textarea>
+  <div class="actions">
+    <button class="secondary" id="save">Simpan Draft</button>
+    <button class="action" id="publish">Terbitkan</button>
+    <button class="secondary hidden" id="cancelEdit">Batal Edit</button>
+  </div>
+  <div class="status" id="status"></div>
+</section>
+
+<section class="list">
+  <div class="group">
+    <h2>Draft</h2>
+    <div id="drafts"></div>
+  </div>
+  <div class="group">
+    <h2>Terbit</h2>
+    <div id="published"></div>
+  </div>
+</section>
+</div>
+
 <script>
-const sb = supabaseClient;
-let session = null;
-let editingId = null;
-
-const $ = id => document.getElementById(id);
-const status = (text, error=false) => {
-  $("status").textContent = text;
-  $("status").style.opacity = error ? "1" : ".75";
+const CONFIG = {
+  url: window.SUPABASE_URL || window.supabaseUrl || window.supabaseURL || "",
+  key: window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY || window.supabaseAnonKey || window.supabaseKey || ""
 };
 
-function slugify(s){
-  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-")
-    + "-" + Date.now().toString(36);
+function getClient(){
+  if(window.supabaseClient) return window.supabaseClient;
+  if(window.sb) return window.sb;
+  if(window.SB) return window.SB;
+  if(CONFIG.url && CONFIG.key) return window.supabase.createClient(CONFIG.url, CONFIG.key);
+  throw new Error("Konfigurasi Supabase tidak ditemukan. Pastikan supabase-config.js benar.");
 }
+let db;
+let editingId=null;
 
-function clearEditor(){
-  editingId = null; $("title").value=""; $("body").value="";
-  $("tag").value="Lainnya"; status("");
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const slugify=s=>String(s||"").toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
+const dateText=v=>v?new Date(v).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}):"—";
+
+async function boot(){
+  try{
+    db=getClient();
+    const {data:{session}}=await db.auth.getSession();
+    if(!session){ location.href="login.html"; return; }
+    $("account").textContent=session.user.email||"penulis";
+    await load();
+  }catch(e){$("status").textContent=e.message}
 }
-
-async function requireSession(){
-  const { data, error } = await sb.auth.getSession();
-  if(error || !data.session){ location.href="login.html"; return false; }
-  session = data.session;
-  $("userEmail").textContent = session.user.email || "";
-  return true;
+async function load(){
+  const {data,error}=await db.from("poems").select("*").order("created_at",{ascending:false});
+  if(error) throw error;
+  render("drafts",(data||[]).filter(x=>x.status==="draft"),true);
+  render("published",(data||[]).filter(x=>x.status==="published"),false);
 }
-
-async function loadPoems(){
-  const { data, error } = await sb.from("poems")
-    .select("id,title,theme,status,created_at,updated_at,published_at,content,slug")
-    .order("updated_at",{ascending:false});
-  if(error){ status("Gagal membaca puisi: "+error.message,true); return; }
-
-  const drafts = data.filter(p=>p.status==="draft");
-  const published = data.filter(p=>p.status==="published");
-
-  $("draftBox").innerHTML = drafts.length ? drafts.map(card).join("") :
-    "<div class='poem-card'><span>Belum ada draft.</span></div>";
-  $("publishedBox").innerHTML = published.length ? published.map(card).join("") :
-    "<div class='poem-card'><span>Belum ada puisi terbit.</span></div>";
+function render(id,rows,isDraft){
+  const box=$(id);
+  if(!rows.length){box.innerHTML='<div class="muted">Belum ada tulisan di sini.</div>';return}
+  box.innerHTML=rows.map(r=>`
+    <article class="item">
+      <div class="item-main">
+        <div class="item-title">${esc(r.title||"Tanpa judul")}</div>
+        <div class="meta">${esc(r.type||"puisi")} · ${esc(r.theme||"Lainnya")} · ${dateText(r.published_at||r.created_at)}</div>
+      </div>
+      <div class="item-actions">
+        <button onclick="editPost('${r.id}')">Edit</button>
+        ${isDraft
+          ? `<button onclick="publishPost('${r.id}')">Terbitkan</button>`
+          : `<button onclick="draftPost('${r.id}')">Jadikan Draft</button>`}
+        <button class="danger" onclick="deletePost('${r.id}')">Hapus</button>
+      </div>
+    </article>`).join("");
 }
-
-function card(p){
-  const date = new Date(p.updated_at || p.created_at).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"});
-  return `<div class="poem-card">
-    <div><strong>${escapeHtml(p.title)}</strong><small>${escapeHtml(p.theme)} · ${p.status} · ${date}</small></div>
-    <div class="card-actions">
-      <button onclick="editPoem('${p.id}')">Edit</button>
-      ${p.status==="draft" ? `<button onclick="publishPoem('${p.id}')">Terbitkan</button>` : `<button onclick="unpublishPoem('${p.id}')">Jadikan Draft</button>`}
-      <button onclick="deletePoem('${p.id}')">Hapus</button>
-    </div>
-  </div>`;
+async function savePost(status){
+  const title=$("title").value.trim(), content=$("content").value.trim();
+  if(!title||!content){$("status").textContent="Judul dan isi tulisan harus diisi.";return}
+  const type=$("type").value, theme=$("theme").value;
+  const payload={title,content,type,theme,slug:slugify(title),status};
+  if(status==="published") payload.published_at=new Date().toISOString();
+  else payload.published_at=null;
+  $("status").textContent="Menyimpan...";
+  let res;
+  if(editingId) res=await db.from("poems").update(payload).eq("id",editingId);
+  else res=await db.from("poems").insert(payload);
+  if(res.error){$("status").textContent=res.error.message;return}
+  $("status").textContent=status==="published"?"Tulisan berhasil diterbitkan.":"Draft berhasil disimpan.";
+  reset(); await load();
 }
-
-function escapeHtml(s=""){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
-
-async function savePoem(forceStatus){
-  if(!session) return;
-  const title = $("title").value.trim();
-  const content = $("body").value.trim();
-  const theme = $("tag").value;
-  if(!title || !content){ status("Judul dan isi puisi belum lengkap.",true); return; }
-
-  const payload = {
-    author_id: session.user.id,
-    title, content, theme,
-    excerpt: content.replace(/\s+/g," ").slice(0,160),
-    status: forceStatus,
-    ...(forceStatus==="published" ? {published_at:new Date().toISOString()} : {})
-  };
-
-  let result;
-  if(editingId){
-    result = await sb.from("poems").update(payload).eq("id",editingId).select().single();
-  } else {
-    payload.slug = slugify(title);
-    result = await sb.from("poems").insert(payload).select().single();
-    if(result.data) editingId = result.data.id;
-  }
-  if(result.error){ status("Gagal menyimpan: "+result.error.message,true); return; }
-  status(forceStatus==="published" ? "Puisi berhasil diterbitkan." : "Draft tersimpan.");
-  await loadPoems();
-}
-
-window.editPoem = async id => {
-  const {data,error}=await sb.from("poems").select("*").eq("id",id).single();
-  if(error){status(error.message,true);return;}
-  editingId=id; $("title").value=data.title; $("tag").value=data.theme||"Lainnya"; $("body").value=data.content;
-  location.hash="editor"; status("Sedang mengedit.");
+window.editPost=async id=>{
+  const {data,error}=await db.from("poems").select("*").eq("id",id).single();
+  if(error){$("status").textContent=error.message;return}
+  editingId=id;$("title").value=data.title||"";$("content").value=data.content||"";
+  $("type").value=data.type||"puisi";$("theme").value=data.theme||"Lainnya";
+  $("cancelEdit").classList.remove("hidden");$("status").textContent="Sedang mengedit.";
+  scrollTo({top:0,behavior:"smooth"});
 };
-window.publishPoem = async id => {
-  const {error}=await sb.from("poems").update({status:"published",published_at:new Date().toISOString()}).eq("id",id);
-  if(error) status(error.message,true); else {status("Puisi diterbitkan.");loadPoems();}
+window.publishPost=async id=>{
+  const res=await db.from("poems").update({status:"published",published_at:new Date().toISOString()}).eq("id",id);
+  if(res.error){$("status").textContent=res.error.message;return}
+  $("status").textContent="Berhasil diterbitkan.";await load();
 };
-window.unpublishPoem = async id => {
-  const {error}=await sb.from("poems").update({status:"draft",published_at:null}).eq("id",id);
-  if(error) status(error.message,true); else {status("Puisi dikembalikan menjadi draft.");loadPoems();}
+window.draftPost=async id=>{
+  const res=await db.from("poems").update({status:"draft",published_at:null}).eq("id",id);
+  if(res.error){$("status").textContent=res.error.message;return}
+  $("status").textContent="Dikembalikan menjadi draft.";await load();
 };
-window.deletePoem = async id => {
-  if(!confirm("Hapus puisi ini?")) return;
-  const {error}=await sb.from("poems").delete().eq("id",id);
-  if(error) status(error.message,true); else {status("Puisi dihapus.");loadPoems();}
+window.deletePost=async id=>{
+  if(!confirm("Hapus tulisan ini?")) return;
+  const res=await db.from("poems").delete().eq("id",id);
+  if(res.error){$("status").textContent=res.error.message;return}
+  $("status").textContent="Tulisan dihapus.";await load();
 };
-
-$("save").onclick=()=>savePoem("draft");
-$("publish").onclick=()=>savePoem("published");
-$("clear").onclick=clearEditor;
-$("logout").onclick=async()=>{await sb.auth.signOut();location.href="login.html";};
-
-(async()=>{
-  if(await requireSession()) await loadPoems();
-})();
+function reset(){
+  editingId=null;$("title").value="";$("content").value="";$("type").value="puisi";$("theme").value="Rindu";
+  $("cancelEdit").classList.add("hidden");
+}
+$("save").onclick=()=>savePost("draft");
+$("publish").onclick=()=>savePost("published");
+$("cancelEdit").onclick=()=>{reset();$("status").textContent=""};
+$("logout").onclick=async()=>{await db.auth.signOut();location.href="login.html"};
+boot();
 </script>
 </body>
 </html>
