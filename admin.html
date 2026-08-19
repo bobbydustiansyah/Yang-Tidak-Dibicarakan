@@ -83,11 +83,13 @@ async function save(status){
     title, content, type, theme,
     status,
     slug: slugify(title),
+    author_id: currentUser.id,
     published_at: status==="published" ? new Date().toISOString() : null,
     updated_at: new Date().toISOString()
   };
   let result;
   if(editingId){
+    delete payload.author_id;
     result=await client.from("poems").update(payload).eq("id",editingId);
   }else{
     payload.created_at=new Date().toISOString();
