@@ -88,17 +88,43 @@ section.list{margin-top:70px}
 </div>
 
 <script>
-const CONFIG = {
-  url: window.SUPABASE_URL || window.supabaseUrl || window.supabaseURL || "",
-  key: window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY || window.supabaseAnonKey || window.supabaseKey || ""
-};
+function readGlobal(names){
+  for(const name of names){
+    try{
+      if(typeof window[name] !== "undefined" && window[name]) return window[name];
+      if(typeof globalThis[name] !== "undefined" && globalThis[name]) return globalThis[name];
+      if(name==="SUPABASE_URL" && typeof SUPABASE_URL!=="undefined") return SUPABASE_URL;
+      if(name==="SUPABASE_PUBLISHABLE_KEY" && typeof SUPABASE_PUBLISHABLE_KEY!=="undefined") return SUPABASE_PUBLISHABLE_KEY;
+      if(name==="SUPABASE_ANON_KEY" && typeof SUPABASE_ANON_KEY!=="undefined") return SUPABASE_ANON_KEY;
+      if(name==="supabaseUrl" && typeof supabaseUrl!=="undefined") return supabaseUrl;
+      if(name==="supabaseURL" && typeof supabaseURL!=="undefined") return supabaseURL;
+      if(name==="supabaseAnonKey" && typeof supabaseAnonKey!=="undefined") return supabaseAnonKey;
+      if(name==="supabaseKey" && typeof supabaseKey!=="undefined") return supabaseKey;
+    }catch(e){}
+  }
+  return "";
+}
 
 function getClient(){
   if(window.supabaseClient) return window.supabaseClient;
-  if(window.sb) return window.sb;
-  if(window.SB) return window.SB;
-  if(CONFIG.url && CONFIG.key) return window.supabase.createClient(CONFIG.url, CONFIG.key);
-  throw new Error("Konfigurasi Supabase tidak ditemukan. Pastikan supabase-config.js benar.");
+  if(window.sb && typeof window.sb.from==="function") return window.sb;
+  if(window.SB && typeof window.SB.from==="function") return window.SB;
+  try{
+    if(typeof supabaseClient!=="undefined" && supabaseClient && typeof supabaseClient.from==="function") return supabaseClient;
+  }catch(e){}
+  try{
+    if(typeof sb!=="undefined" && sb && typeof sb.from==="function") return sb;
+  }catch(e){}
+  try{
+    if(typeof SB!=="undefined" && SB && typeof SB.from==="function") return SB;
+  }catch(e){}
+
+  const url=readGlobal(["SUPABASE_URL","supabaseUrl","supabaseURL"]);
+  const key=readGlobal(["SUPABASE_PUBLISHABLE_KEY","SUPABASE_ANON_KEY","supabaseAnonKey","supabaseKey"]);
+  if(url && key && window.supabase && typeof window.supabase.createClient==="function"){
+    return window.supabase.createClient(url,key);
+  }
+  throw new Error("Konfigurasi Supabase tidak ditemukan. Pastikan supabase-config.js ada dan berisi URL + publishable/anon key.");
 }
 let db;
 let editingId=null;
