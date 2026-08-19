@@ -4,224 +4,146 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ruang Tulis — Yang Kita Bicarakan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
 <style>
-:root{--paper:#f5f0e6;--ink:#191714;--muted:#777166;--line:#d5cec1;--card:#eee7da}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
-a{color:inherit;text-decoration:none}.shell{max-width:1180px;margin:auto;padding:28px 28px 70px}
-.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:20px}
-.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.logout{border:0;background:none;font:inherit;cursor:pointer}
-h1,h2,.title{font-family:"Playfair Display",Georgia,serif;font-weight:400}
-h1{font-size:clamp(48px,7vw,84px);line-height:.98;margin:70px 0 18px}
-h2{font-size:34px;margin:0 0 22px}.muted{color:var(--muted);font-size:18px}
-.editor{margin-top:42px;background:var(--card);border:1px solid var(--line);padding:30px}
-input,textarea,select{width:100%;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--ink)}
-input{font-family:"Playfair Display",Georgia,serif;font-size:32px;padding:12px 0;border-width:0 0 1px}
-select{padding:13px;margin-top:22px;background:var(--paper)}
-textarea{min-height:360px;margin-top:22px;padding:20px;line-height:1.8;resize:vertical}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-button.action{padding:13px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
-button.secondary{padding:13px 20px;border:1px solid var(--line);background:transparent;cursor:pointer}
-.status{min-height:24px;margin-top:14px;color:var(--muted)}
-section.list{margin-top:70px}
-.group{margin-bottom:45px}.group-title{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px}
-.item{display:flex;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid var(--line)}
-.item-main{min-width:0}.item-title{font-family:"Playfair Display",Georgia,serif;font-size:27px}.meta{font-size:13px;color:var(--muted);margin-top:6px}
-.item-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.item-actions button{border:1px solid var(--line);background:transparent;padding:8px 11px;cursor:pointer}
-.danger{color:#8b4036}
-.hidden{display:none!important}
-@media(max-width:650px){.shell{padding:20px 18px 55px}.top{padding-bottom:15px}h1{margin-top:55px}.editor{padding:20px}input{font-size:27px}.item{display:block}.item-actions{margin-top:14px}}
+:root{--paper:#f4ecdf;--ink:#201f1b;--muted:#777166;--line:#d7cdbd}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:38px 24px 70px}
+header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+h1{font:42px Georgia,serif;margin:0 0 8px}.sub{color:var(--muted)}button,select,input,textarea{font:inherit}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#f8f2e8;color:var(--ink);padding:17px 18px;border-radius:0}
+input{font:24px Georgia,serif} select{font-size:18px} textarea{min-height:390px;resize:vertical;line-height:1.7;font-family:Georgia,serif;font-size:18px}
+label{display:block;margin:20px 0 9px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.08em}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.actions{display:flex;gap:16px;margin-top:22px}.btn{padding:16px 28px;border:1px solid var(--line);background:transparent;cursor:pointer}.primary{background:#1e1d19;color:#fff;border-color:#1e1d19}
+#status{margin-top:18px;color:var(--muted);white-space:pre-wrap}.error{color:#9b342c}.ok{color:#52664d}
+.card{border-top:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;gap:15px}.meta{color:var(--muted);font-size:14px;margin-top:6px}.small button{padding:8px 11px;margin-left:5px}
+@media(max-width:650px){.wrap{padding:28px 18px}.row{grid-template-columns:1fr}h1{font-size:34px}.actions{flex-direction:column}.actions button{width:100%}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header class="top">
-  <div>
-    <div class="eyebrow">Ruang Tulis</div>
-    <div id="account" class="muted" style="font-size:13px;margin-top:6px">memuat...</div>
-  </div>
-  <button class="logout" id="logout">Keluar</button>
+<div class="wrap">
+<header>
+<div><h1>Ruang Tulis</h1><div class="sub">Yang Kita Bicarakan · ruang pribadi untuk menulis</div></div>
+<button class="btn" id="logout">Keluar</button>
 </header>
 
-<h1>Selamat malam.</h1>
-<p class="muted">Apa yang ingin kamu tulis?</p>
+<form id="form">
+<label for="title">Judul</label>
+<input id="title" required placeholder="Judul tulisan…">
 
-<section class="editor">
-  <input id="title" placeholder="Judul tulisan" autocomplete="off">
-  <select id="type">
-    <option value="puisi">Puisi</option>
-    <option value="jurnal">Jurnal</option>
-  </select>
-  <select id="theme">
-    <option value="Rindu">Rindu</option>
-    <option value="Kehilangan">Kehilangan</option>
-    <option value="Pulang">Pulang</option>
-    <option value="Malam">Malam</option>
-    <option value="Catatan">Catatan</option>
-    <option value="Lainnya">Lainnya</option>
-  </select>
-  <textarea id="content" placeholder="Tulis di sini..."></textarea>
-  <div class="actions">
-    <button class="secondary" id="save">Simpan Draft</button>
-    <button class="action" id="publish">Terbitkan</button>
-    <button class="secondary hidden" id="cancelEdit">Batal Edit</button>
-  </div>
-  <div class="status" id="status"></div>
-</section>
+<div class="row">
+<div><label for="type">Jenis</label>
+<select id="type"><option value="puisi">Puisi</option><option value="jurnal">Jurnal</option></select></div>
+<div><label for="theme">Tema</label>
+<select id="theme">
+<option>Rindu</option><option>Kehilangan</option><option>Pulang</option><option>Malam</option><option>Catatan</option><option>Lainnya</option>
+</select></div>
+</div>
 
-<section class="list">
-  <div class="group">
-    <h2>Draft</h2>
-    <div id="drafts"></div>
-  </div>
-  <div class="group">
-    <h2>Terbit</h2>
-    <div id="published"></div>
-  </div>
-</section>
+<label for="content">Isi</label>
+<textarea id="content" required placeholder="Tulis di sini…"></textarea>
+
+<div class="actions">
+<button class="btn" type="button" id="draft">Simpan Draft</button>
+<button class="btn primary" type="button" id="publish">Terbitkan</button>
+</div>
+<div id="status"></div>
+</form>
+
+<h2 style="font:28px Georgia,serif;margin-top:55px">Tulisan Saya</h2>
+<div id="list">Memuat…</div>
 </div>
 
 <script>
-function readGlobal(names){
-  for(const name of names){
-    try{
-      if(typeof window[name] !== "undefined" && window[name]) return window[name];
-      if(typeof globalThis[name] !== "undefined" && globalThis[name]) return globalThis[name];
-      if(name==="SUPABASE_URL" && typeof SUPABASE_URL!=="undefined") return SUPABASE_URL;
-      if(name==="SUPABASE_PUBLISHABLE_KEY" && typeof SUPABASE_PUBLISHABLE_KEY!=="undefined") return SUPABASE_PUBLISHABLE_KEY;
-      if(name==="SUPABASE_ANON_KEY" && typeof SUPABASE_ANON_KEY!=="undefined") return SUPABASE_ANON_KEY;
-      if(name==="supabaseUrl" && typeof supabaseUrl!=="undefined") return supabaseUrl;
-      if(name==="supabaseURL" && typeof supabaseURL!=="undefined") return supabaseURL;
-      if(name==="supabaseAnonKey" && typeof supabaseAnonKey!=="undefined") return supabaseAnonKey;
-      if(name==="supabaseKey" && typeof supabaseKey!=="undefined") return supabaseKey;
-    }catch(e){}
+const SUPABASE_URL = "https://yewaudnwthgmxivxlrkq.supabase.co";
+const SUPABASE_KEY = "sb_publishable_rHYXOaAtrrrNzSrbszKEKw_w1lE10TY";
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null;
+let editingId = null;
+
+const $ = id => document.getElementById(id);
+function slugify(s){return s.toString().toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") || "tulisan";}
+function message(text, cls=""){ $("status").className=cls; $("status").textContent=text; }
+
+async function init(){
+  const {data,error}=await client.auth.getUser();
+  if(error || !data.user){
+    message("Sesi login tidak ditemukan. Silakan login kembali.","error");
+    $("form").style.display="none"; return;
   }
-  return "";
+  currentUser=data.user;
+  await loadList();
 }
-
-function getClient(){
-  if(window.supabaseClient) return window.supabaseClient;
-  if(window.sb && typeof window.sb.from==="function") return window.sb;
-  if(window.SB && typeof window.SB.from==="function") return window.SB;
-  try{
-    if(typeof supabaseClient!=="undefined" && supabaseClient && typeof supabaseClient.from==="function") return supabaseClient;
-  }catch(e){}
-  try{
-    if(typeof sb!=="undefined" && sb && typeof sb.from==="function") return sb;
-  }catch(e){}
-  try{
-    if(typeof SB!=="undefined" && SB && typeof SB.from==="function") return SB;
-  }catch(e){}
-
-  const url=readGlobal(["SUPABASE_URL","supabaseUrl","supabaseURL"]);
-  const key=readGlobal(["SUPABASE_PUBLISHABLE_KEY","SUPABASE_ANON_KEY","supabaseAnonKey","supabaseKey"]);
-  if(url && key && window.supabase && typeof window.supabase.createClient==="function"){
-    return window.supabase.createClient(url,key);
+async function save(status){
+  const title=$("title").value.trim(), content=$("content").value.trim(), type=$("type").value, theme=$("theme").value;
+  if(!title || !content){message("Judul dan isi wajib diisi.","error");return;}
+  message("Menyimpan…");
+  const payload={
+    title, content, type, theme,
+    status,
+    slug: slugify(title),
+    user_id: currentUser.id,
+    published_at: status==="published" ? new Date().toISOString() : null,
+    updated_at: new Date().toISOString()
+  };
+  let result;
+  if(editingId){
+    delete payload.user_id;
+    result=await client.from("poems").update(payload).eq("id",editingId);
+  }else{
+    payload.created_at=new Date().toISOString();
+    result=await client.from("poems").insert(payload);
   }
-  throw new Error("Konfigurasi Supabase tidak ditemukan. Pastikan supabase-config.js ada dan berisi URL + publishable/anon key.");
-}
-let db;
-let editingId=null;
-let currentUser=null;
-
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-const slugify=s=>String(s||"").toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
-const dateText=v=>v?new Date(v).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}):"—";
-
-async function boot(){
-  try{
-    db=getClient();
-    const {data:{session}}=await db.auth.getSession();
-    if(!session){ location.href="login.html"; return; }
-    currentUser=session.user;
-    $("account").textContent=session.user.email||"penulis";
-    await load();
-  }catch(e){$("status").textContent=e.message}
-}
-async function load(){
-  const {data,error}=await db.from("poems").select("*").order("created_at",{ascending:false});
-  if(error) throw error;
-  render("drafts",(data||[]).filter(x=>x.status==="draft"),true);
-  render("published",(data||[]).filter(x=>x.status==="published"),false);
-}
-function render(id,rows,isDraft){
-  const box=$(id);
-  if(!rows.length){box.innerHTML='<div class="muted">Belum ada tulisan di sini.</div>';return}
-  box.innerHTML=rows.map(r=>`
-    <article class="item">
-      <div class="item-main">
-        <div class="item-title">${esc(r.title||"Tanpa judul")}</div>
-        <div class="meta">${esc(r.type||"puisi")} · ${esc(r.theme||"Lainnya")} · ${dateText(r.published_at||r.created_at)}</div>
-      </div>
-      <div class="item-actions">
-        <button onclick="editPost('${r.id}')">Edit</button>
-        ${isDraft
-          ? `<button onclick="publishPost('${r.id}')">Terbitkan</button>`
-          : `<button onclick="draftPost('${r.id}')">Jadikan Draft</button>`}
-        <button class="danger" onclick="deletePost('${r.id}')">Hapus</button>
-      </div>
-    </article>`).join("");
-}
-async function savePost(status){
-  const title=$("title").value.trim(), content=$("content").value.trim();
-  if(!title||!content){$("status").textContent="Judul dan isi tulisan harus diisi.";return}
-  const type=$("type").value, theme=$("theme").value;
-  const payload={title,content,type,theme,slug:slugify(title),status};
-  if(!editingId && currentUser?.id) payload.user_id=currentUser.id;
-  if(status==="published") payload.published_at=new Date().toISOString();
-  else payload.published_at=null;
-  $("status").textContent="Menyimpan...";
-  let res;
-  if(editingId) res=await db.from("poems").update(payload).eq("id",editingId);
-  else res=await db.from("poems").insert(payload);
-  if(res.error){
-    console.error("Supabase save error:",res.error);
-    $("status").textContent=`Gagal menyimpan: ${res.error.message}${res.error.details?" — "+res.error.details:""}`;
+  if(result.error){
+    console.error(result.error);
+    message("Gagal menyimpan:\n"+result.error.message+
+      (result.error.details ? "\n"+result.error.details:"")+
+      (result.error.hint ? "\n"+result.error.hint:""),"error");
     return;
   }
-  $("status").textContent=status==="published"?"Tulisan berhasil diterbitkan.":"Draft berhasil disimpan.";
-  reset(); await load();
+  message(status==="published" ? "Puisi/Jurnal berhasil diterbitkan." : "Draft berhasil disimpan.","ok");
+  resetForm(); await loadList();
 }
+function resetForm(){editingId=null;$("form").reset();$("type").value="puisi";$("theme").value="Rindu";}
+async function loadList(){
+  const {data,error}=await client.from("poems").select("*").order("created_at",{ascending:false});
+  if(error){$("list").textContent="Gagal memuat: "+error.message;return;}
+  if(!data?.length){$("list").textContent="Belum ada tulisan.";return;}
+  $("list").innerHTML=data.map(x=>`
+  <div class="card">
+    <div><strong>${esc(x.title||"(tanpa judul)")}</strong>
+    <div class="meta">${esc(x.type||"puisi")} · ${esc(x.theme||"")} · ${esc(x.status||"")}</div></div>
+    <div class="small">
+      <button class="btn" onclick="editPost('${x.id}')">Edit</button>
+      <button class="btn" onclick="togglePost('${x.id}','${x.status}')">${x.status==="published"?"Jadikan Draft":"Terbitkan"}</button>
+      <button class="btn" onclick="deletePost('${x.id}')">Hapus</button>
+    </div>
+  </div>`).join("");
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 window.editPost=async id=>{
-  const {data,error}=await db.from("poems").select("*").eq("id",id).single();
-  if(error){$("status").textContent=error.message;return}
-  editingId=id;$("title").value=data.title||"";$("content").value=data.content||"";
-  $("type").value=data.type||"puisi";$("theme").value=data.theme||"Lainnya";
-  $("cancelEdit").classList.remove("hidden");$("status").textContent="Sedang mengedit.";
-  scrollTo({top:0,behavior:"smooth"});
+ const {data,error}=await client.from("poems").select("*").eq("id",id).single();
+ if(error){message(error.message,"error");return}
+ editingId=id;$("title").value=data.title||"";$("content").value=data.content||"";
+ $("type").value=data.type||"puisi";$("theme").value=data.theme||"Rindu";
+ window.scrollTo({top:0,behavior:"smooth"});message("Mode edit aktif.","ok");
 };
-window.publishPost=async id=>{
-  const res=await db.from("poems").update({status:"published",published_at:new Date().toISOString()}).eq("id",id);
-  if(res.error){$("status").textContent=res.error.message;return}
-  $("status").textContent="Berhasil diterbitkan.";await load();
-};
-window.draftPost=async id=>{
-  const res=await db.from("poems").update({status:"draft",published_at:null}).eq("id",id);
-  if(res.error){$("status").textContent=res.error.message;return}
-  $("status").textContent="Dikembalikan menjadi draft.";await load();
+window.togglePost=async(id,status)=>{
+ message("Menyimpan…");
+ const next=status==="published"?"draft":"published";
+ const {error}=await client.from("poems").update({status:next,published_at:next==="published"?new Date().toISOString():null,updated_at:new Date().toISOString()}).eq("id",id);
+ if(error){message("Gagal:\n"+error.message,"error");return} await loadList();message(next==="published"?"Berhasil diterbitkan.":"Dipindahkan menjadi draft.","ok");
 };
 window.deletePost=async id=>{
-  if(!confirm("Hapus tulisan ini?")) return;
-  const res=await db.from("poems").delete().eq("id",id);
-  if(res.error){$("status").textContent=res.error.message;return}
-  $("status").textContent="Tulisan dihapus.";await load();
+ if(!confirm("Hapus tulisan ini?"))return;
+ const {error}=await client.from("poems").delete().eq("id",id);
+ if(error){message("Gagal menghapus:\n"+error.message,"error");return} await loadList();message("Tulisan dihapus.","ok");
 };
-function reset(){
-  editingId=null;$("title").value="";$("content").value="";$("type").value="puisi";$("theme").value="Rindu";
-  $("cancelEdit").classList.add("hidden");
-}
-$("save").onclick=()=>savePost("draft");
-$("publish").onclick=()=>savePost("published");
-$("cancelEdit").onclick=()=>{reset();$("status").textContent=""};
-$("logout").onclick=async()=>{await db.auth.signOut();location.href="login.html"};
-boot();
+$("draft").onclick=()=>save("draft");
+$("publish").onclick=()=>save("published");
+$("logout").onclick=async()=>{await client.auth.signOut();location.href="login.html";};
+init();
 </script>
 </body>
 </html>
