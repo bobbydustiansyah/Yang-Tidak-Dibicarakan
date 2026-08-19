@@ -1,8 +1,179 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ruang Tulis — Yang Kita Bicarakan</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head>
-<body class="admin"><aside><a class="brand" href="index.html">yang kita bicarakan<em>pukul dua dini hari</em></a><a href="index.html">◦ Beranda</a><a href="#editor">◦ Tulis Puisi</a><a href="#drafts">◦ Draft</a><a href="#published">◦ Terbit</a><a href="index.html#catatan">◦ Catatan</a></aside>
-<main class="workspace"><div class="workspace-top"><p class="eyebrow">ruang tulis</p><button id="theme" class="icon">☾</button></div><h1>Selamat malam.</h1><p class="muted">Apa yang ingin kamu tulis?</p>
-<section id="editor" class="editor"><input id="title" placeholder="Judul tulisan"><select id="tag"><option>Rindu</option><option>Kehilangan</option><option>Pulang</option><option>Malam</option><option>Lainnya</option></select><textarea id="body" placeholder="Tulis puisimu di sini..."></textarea><div><button class="secondary" id="save">Simpan Draft</button><button class="button" id="publish">Terbitkan</button></div></section>
-<section id="drafts"><h2>Draft</h2><div id="draftBox" class="cards"></div></section><section id="published"><h2>Terbit</h2><div class="cards"><div>Hal-Hal yang Kita Simpan <small>19 Agustus 2026</small></div></div></section></main>
-<script src="app.js"></script></body></html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ruang Tulis — Yang Kita Bicarakan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.workspace{max-width:980px}
+.authbar{display:flex;align-items:center;gap:14px;justify-content:flex-end;font:13px "DM Sans",sans-serif}
+.authbar button{border:1px solid var(--line);background:none;padding:8px 12px;cursor:pointer}
+.editor{display:grid;gap:14px}
+.editor input,.editor textarea,.editor select{font:inherit;border:1px solid var(--line);background:transparent;padding:14px;box-sizing:border-box}
+.editor input{font:32px "Playfair Display",serif}
+.editor textarea{min-height:360px;line-height:1.8;resize:vertical}
+.editor select{font:14px "DM Sans",sans-serif;width:max-content}
+.editor-actions{display:flex;gap:10px;flex-wrap:wrap}
+.status{font:14px "DM Sans",sans-serif;min-height:20px}
+.cards{display:grid;gap:10px}
+.poem-card{border-top:1px solid var(--line);padding:18px 0;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.poem-card strong{font-family:"Playfair Display",serif;font-size:21px}
+.poem-card small{display:block;font:12px "DM Sans",sans-serif;opacity:.7;margin-top:5px}
+.card-actions{display:flex;gap:7px}
+.card-actions button{font:12px "DM Sans",sans-serif;padding:8px 10px;border:1px solid var(--line);background:none;cursor:pointer}
+@media(max-width:700px){.poem-card{display:block}.card-actions{margin-top:12px}.editor input{font-size:26px}}
+</style>
+</head>
+<body class="admin">
+<aside>
+  <a class="brand" href="index.html">yang kita bicarakan<em>pukul dua dini hari</em></a>
+  <a href="#editor">◦ Tulis Puisi</a><a href="#drafts">◦ Draft</a><a href="#published">◦ Terbit</a>
+  <a href="index.html">◦ Lihat Website</a>
+</aside>
+<main class="workspace">
+  <div class="workspace-top">
+    <p class="eyebrow">ruang tulis</p>
+    <div class="authbar"><span id="userEmail"></span><button id="logout">Keluar</button><button id="theme" class="icon">☾</button></div>
+  </div>
+  <h1>Selamat malam.</h1>
+  <p class="muted">Apa yang ingin kamu tulis?</p>
+
+  <section id="editor" class="editor">
+    <input id="title" placeholder="Judul tulisan">
+    <select id="tag"><option>Rindu</option><option>Kehilangan</option><option>Pulang</option><option>Malam</option><option>Lainnya</option></select>
+    <textarea id="body" placeholder="Tulis puisimu di sini..."></textarea>
+    <div class="editor-actions">
+      <button class="secondary" id="save">Simpan Draft</button>
+      <button class="button" id="publish">Terbitkan</button>
+      <button class="secondary" id="clear">Tulisan Baru</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section id="drafts"><h2>Draft</h2><div id="draftBox" class="cards"></div></section>
+  <section id="published"><h2>Terbit</h2><div id="publishedBox" class="cards"></div></section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const sb = supabaseClient;
+let session = null;
+let editingId = null;
+
+const $ = id => document.getElementById(id);
+const status = (text, error=false) => {
+  $("status").textContent = text;
+  $("status").style.opacity = error ? "1" : ".75";
+};
+
+function slugify(s){
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-")
+    + "-" + Date.now().toString(36);
+}
+
+function clearEditor(){
+  editingId = null; $("title").value=""; $("body").value="";
+  $("tag").value="Lainnya"; status("");
+}
+
+async function requireSession(){
+  const { data, error } = await sb.auth.getSession();
+  if(error || !data.session){ location.href="login.html"; return false; }
+  session = data.session;
+  $("userEmail").textContent = session.user.email || "";
+  return true;
+}
+
+async function loadPoems(){
+  const { data, error } = await sb.from("poems")
+    .select("id,title,theme,status,created_at,updated_at,published_at,content,slug")
+    .order("updated_at",{ascending:false});
+  if(error){ status("Gagal membaca puisi: "+error.message,true); return; }
+
+  const drafts = data.filter(p=>p.status==="draft");
+  const published = data.filter(p=>p.status==="published");
+
+  $("draftBox").innerHTML = drafts.length ? drafts.map(card).join("") :
+    "<div class='poem-card'><span>Belum ada draft.</span></div>";
+  $("publishedBox").innerHTML = published.length ? published.map(card).join("") :
+    "<div class='poem-card'><span>Belum ada puisi terbit.</span></div>";
+}
+
+function card(p){
+  const date = new Date(p.updated_at || p.created_at).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"});
+  return `<div class="poem-card">
+    <div><strong>${escapeHtml(p.title)}</strong><small>${escapeHtml(p.theme)} · ${p.status} · ${date}</small></div>
+    <div class="card-actions">
+      <button onclick="editPoem('${p.id}')">Edit</button>
+      ${p.status==="draft" ? `<button onclick="publishPoem('${p.id}')">Terbitkan</button>` : `<button onclick="unpublishPoem('${p.id}')">Jadikan Draft</button>`}
+      <button onclick="deletePoem('${p.id}')">Hapus</button>
+    </div>
+  </div>`;
+}
+
+function escapeHtml(s=""){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
+
+async function savePoem(forceStatus){
+  if(!session) return;
+  const title = $("title").value.trim();
+  const content = $("body").value.trim();
+  const theme = $("tag").value;
+  if(!title || !content){ status("Judul dan isi puisi belum lengkap.",true); return; }
+
+  const payload = {
+    author_id: session.user.id,
+    title, content, theme,
+    excerpt: content.replace(/\s+/g," ").slice(0,160),
+    status: forceStatus,
+    ...(forceStatus==="published" ? {published_at:new Date().toISOString()} : {})
+  };
+
+  let result;
+  if(editingId){
+    result = await sb.from("poems").update(payload).eq("id",editingId).select().single();
+  } else {
+    payload.slug = slugify(title);
+    result = await sb.from("poems").insert(payload).select().single();
+    if(result.data) editingId = result.data.id;
+  }
+  if(result.error){ status("Gagal menyimpan: "+result.error.message,true); return; }
+  status(forceStatus==="published" ? "Puisi berhasil diterbitkan." : "Draft tersimpan.");
+  await loadPoems();
+}
+
+window.editPoem = async id => {
+  const {data,error}=await sb.from("poems").select("*").eq("id",id).single();
+  if(error){status(error.message,true);return;}
+  editingId=id; $("title").value=data.title; $("tag").value=data.theme||"Lainnya"; $("body").value=data.content;
+  location.hash="editor"; status("Sedang mengedit.");
+};
+window.publishPoem = async id => {
+  const {error}=await sb.from("poems").update({status:"published",published_at:new Date().toISOString()}).eq("id",id);
+  if(error) status(error.message,true); else {status("Puisi diterbitkan.");loadPoems();}
+};
+window.unpublishPoem = async id => {
+  const {error}=await sb.from("poems").update({status:"draft",published_at:null}).eq("id",id);
+  if(error) status(error.message,true); else {status("Puisi dikembalikan menjadi draft.");loadPoems();}
+};
+window.deletePoem = async id => {
+  if(!confirm("Hapus puisi ini?")) return;
+  const {error}=await sb.from("poems").delete().eq("id",id);
+  if(error) status(error.message,true); else {status("Puisi dihapus.");loadPoems();}
+};
+
+$("save").onclick=()=>savePoem("draft");
+$("publish").onclick=()=>savePoem("published");
+$("clear").onclick=clearEditor;
+$("logout").onclick=async()=>{await sb.auth.signOut();location.href="login.html";};
+
+(async()=>{
+  if(await requireSession()) await loadPoems();
+})();
+</script>
+</body>
+</html>

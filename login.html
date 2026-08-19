@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Masuk — Yang Kita Bicarakan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.login-page{min-height:100vh;display:grid;place-items:center;padding:32px}
+.login-card{width:min(460px,100%);padding:44px 34px;border:1px solid var(--line,#d8d2c6);background:var(--paper,#f4f0e6)}
+.login-card h1{font-family:"Playfair Display",serif;font-size:42px;line-height:1.05;margin:10px 0 12px}
+.login-card .brand{display:block;text-decoration:none;color:inherit;font-family:"Playfair Display",serif;font-size:21px}
+.login-card .brand em{display:block;font-size:18px}
+.login-card label{display:block;font-family:"DM Sans",sans-serif;font-size:13px;margin:20px 0 8px}
+.login-card input{width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--line,#d8d2c6);background:transparent;font:16px "DM Sans",sans-serif}
+.login-card button{margin-top:22px;width:100%}
+.login-msg{min-height:24px;margin-top:14px;font:14px "DM Sans",sans-serif}
+.back{display:inline-block;margin-top:26px;font:14px "DM Sans",sans-serif}
+</style>
+</head>
+<body>
+<main class="login-page">
+  <section class="login-card">
+    <a class="brand" href="index.html">yang kita bicarakan<em>pukul dua dini hari</em></a>
+    <p class="eyebrow" style="margin-top:38px">ruang pribadi</p>
+    <h1>Masuk.</h1>
+    <p class="muted">Tempat tulisan-tulisan yang belum ingin dibicarakan.</p>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button class="button" type="submit">Masuk →</button>
+      <div id="loginMsg" class="login-msg"></div>
+    </form>
+    <a class="back" href="index.html">← kembali ke beranda</a>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const form = document.getElementById("loginForm");
+const msg = document.getElementById("loginMsg");
+
+(async () => {
+  const { data } = await supabaseClient.auth.getSession();
+  if (data.session) location.href = "admin.html";
+})();
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg.textContent = "Memeriksa...";
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: document.getElementById("email").value.trim(),
+    password: document.getElementById("password").value
+  });
+  if (error) {
+    msg.textContent = "Email atau password tidak benar.";
+    return;
+  }
+  location.href = "admin.html";
+});
+</script>
+</body>
+</html>
