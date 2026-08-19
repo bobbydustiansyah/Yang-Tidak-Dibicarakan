@@ -1,83 +1,11 @@
-<!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yang Kita Bicarakan — pukul dua dini hari</title>
-<link rel="stylesheet" href="public-style.css">
-</head>
-<body data-poem-page="puisi.html">
-<header class="site-header">
-  <a class="brand" href="index.html">yang kita bicarakan<br><em>pukul dua dini hari</em></a>
-  <nav>
-    <a href="index.html">PUISI</a>
-    <a href="#catatan">CATATAN</a>
-    <a href="#arsip">ARSIP</a>
-    <a href="#tentang">TENTANG</a>
-  </nav>
-  <button id="themeToggle" aria-label="Ganti tema">☾</button>
-</header>
-
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Yang Kita Bicarakan — pukul dua dini hari</title><link rel="stylesheet" href="style-v8.css"></head><body>
+<header class="site-header"><a class="brand" href="index.html">yang kita bicarakan<br><em>pukul dua dini hari</em></a><nav class="nav"><a href="#puisi">PUISI</a><a href="#jurnal">JURNAL</a><a href="#arsip">ARSIP</a><a href="#tentang">TENTANG</a></nav><div class="header-actions"><button class="icon-btn" id="themeToggle">☾</button></div></header>
 <main>
-<section class="hero">
-  <div class="hero-inner">
-    <p class="eyebrow">SEBUAH RUANG</p>
-    <h1>yang kita<br>bicarakan</h1>
-    <p class="hero-sub"><em>pukul dua dini hari</em></p>
-    <p class="hero-copy">sebuah ruang untuk hal-hal<br>yang tak sempat diucapkan.</p>
-    <a class="hero-link" href="#terakhir">baca tulisan terakhir →</a>
-  </div>
-</section>
-
-<section id="terakhir" class="section">
-  <div class="section-label">TULISAN TERAKHIR</div>
-  <div data-featured-poem class="featured-poem">
-    <p>Memuat tulisan terakhir…</p>
-  </div>
-  <div data-poem-list class="poem-list"></div>
-</section>
-
-<section id="arsip" class="section archive-section">
-  <div class="section-label">ARSIP</div>
-  <div class="archive-tools">
-    <input id="poem-search" data-poem-search type="search" placeholder="cari puisi...">
-  </div>
-  <div class="filters">
-    <button data-poem-filter="Semua" class="active">Semua</button>
-    <button data-poem-filter="Rindu">Rindu</button>
-    <button data-poem-filter="Kehilangan">Kehilangan</button>
-    <button data-poem-filter="Pulang">Pulang</button>
-    <button data-poem-filter="Malam">Malam</button>
-  </div>
-</section>
-
-<section id="catatan" class="section">
-  <div class="section-label">CATATAN</div>
-  <h2>Tempat untuk pikiran<br>yang belum menjadi puisi.</h2>
-  <p class="muted">Beberapa hal tidak perlu menjadi puisi. Kadang cukup ditulis, lalu dibiarkan tinggal.</p>
-</section>
-
-<section id="tentang" class="section about">
-  <div class="section-label">TENTANG</div>
-  <h2>Tentang ruang ini</h2>
-  <p>Aku membuat tempat ini untuk tulisan-tulisan yang tidak tahu harus pulang ke mana.</p>
-  <p>Beberapa lahir dari percakapan.<br>Beberapa dari kehilangan.<br>Beberapa hanya muncul pukul dua dini hari dan tidak pernah datang lagi.</p>
-  <p>Kalau kau menemukan sesuatu di sini yang terasa seperti pernah kau alami, mungkin kita pernah berada di malam yang sama.</p>
-  <p class="signature">— Bobby Dustiansyah</p>
-</section>
-</main>
-
-<footer>
-  <span>yang kita bicarakan</span>
-  <span>pukul dua dini hari</span>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="public.js"></script>
-<script>
-const t=document.getElementById('themeToggle');
-t?.addEventListener('click',()=>document.body.classList.toggle('dark'));
-</script>
-</body>
-</html>
+<section class="hero wrap"><div><div class="kicker">SEBUAH RUANG UNTUK MENULIS</div><h1>yang kita<br>bicarakan</h1><p class="lead">Beberapa hal hanya berani kita katakan ketika dunia sudah mulai diam.</p></div><aside class="hero-note"><div class="small">PUKUL DUA DINI HARI</div><p>Puisi, jurnal, dan fragmen tentang hal-hal yang tinggal lebih lama daripada yang kita kira.</p><a class="read" href="#puisi">masuk ke dalam →</a></aside></section>
+<section class="duo wrap"><a class="duo-card" href="#puisi"><div><div class="kicker">01 — PUISI</div><h2>Yang terasa,<br>tapi tak terucap.</h2><p>Kumpulan puisi tentang rindu, kehilangan, pulang, malam, dan orang-orang yang pernah kita tunggu.</p></div><span class="arrow">→</span></a><a class="duo-card" href="#jurnal"><div><div class="kicker">02 — JURNAL</div><h2>Catatan dari<br>hari-hari biasa.</h2><p>Prosa pendek, fragmen, cerita, dan pikiran yang tidak selalu cukup menjadi puisi.</p></div><span class="arrow">→</span></a></section>
+<section id="puisi" class="section wrap"><div class="section-head"><div><div class="kicker">PUISI TERBARU</div><h2 class="section-title">Yang baru ditulis.</h2></div><a class="read" href="#arsip">lihat semua →</a></div><div data-featured-poem class="feature"><p>Memuat tulisan…</p></div><div data-poem-list class="list"></div></section>
+<section id="jurnal" class="section wrap"><div class="section-head"><div><div class="kicker">JURNAL</div><h2 class="section-title">Catatan yang<br>belum selesai.</h2></div><p class="section-intro">Tempat untuk tulisan yang lebih panjang, lebih dekat, dan mungkin lebih jujur.</p></div><div class="journal-grid"><article class="journal-card"><div class="kicker">SEGERA</div><h3>Tentang malam yang terlalu panjang</h3><p>Sebuah catatan tentang malam, pikiran yang berisik, dan alasan kita belum tidur.</p></article><article class="journal-card"><div class="kicker">SEGERA</div><h3>Kita ternyata tidak pernah benar-benar selesai</h3><p>Tentang orang-orang yang pergi tetapi meninggalkan kebiasaan untuk mengingatnya.</p></article></div></section>
+<section id="arsip" class="section archive wrap"><div class="section-head"><div><div class="kicker">ARSIP</div><h2 class="section-title">Semua tulisan.</h2></div></div><input id="poem-search" class="search" data-poem-search placeholder="cari judul, tema, atau kata…"><div class="filters"><button data-poem-filter="Semua" class="active">Semua</button><button data-poem-filter="Rindu">Rindu</button><button data-poem-filter="Kehilangan">Kehilangan</button><button data-poem-filter="Pulang">Pulang</button><button data-poem-filter="Malam">Malam</button></div></section>
+<section id="tentang" class="section wrap about"><div><div class="kicker">TENTANG</div><h2>Sebuah rumah<br>untuk tulisan.</h2></div><div class="about-copy"><p>Aku membuat tempat ini untuk hal-hal yang biasanya kita simpan.</p><p>Tentang orang yang pernah kita tunggu. Tentang rumah yang pernah kita tinggalkan. Tentang percakapan yang berhenti sebelum selesai.</p><p>Sebagian tulisan lahir pukul dua dini hari. Sebagian lainnya baru berani ditulis ketika pagi datang.</p><p><em>Kalau kau menemukan sesuatu di sini yang terasa seperti pernah kau alami, mungkin kita pernah berada di malam yang sama.</em></p><p>— Bobby Dustiansyah</p></div></section>
+</main><footer><span>yang kita bicarakan</span><span>pukul dua dini hari · 2026</span></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="public-v8.js"></script></body></html>
