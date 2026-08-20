@@ -1,0 +1,152 @@
+/* Yang Kita Bicarakan V18 — public frontend
+   Reads published Puisi/Jurnal directly from Supabase.
+*/
+(() => {
+  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+  const state = { all: [], poems: [], journals: [] };
+
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+  const slugify = v => String(v || "").toLowerCase().trim()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-");
+  const fmt = v => v ? new Intl.DateTimeFormat("id-ID",{day:"2-digit",month:"long",year:"numeric"}).format(new Date(v)) : "";
+  const normalize = r => ({
+    ...r,
+    title:r.title || "Tanpa judul",
+    content:r.content || r.body || "",
+    theme:r.theme || "Catatan",
+    type:r.type === "jurnal" ? "jurnal" : "puisi",
+    slug:r.slug || slugify(r.title),
+    date:r.published_at || r.created_at
+  });
+  const link = r => `puisi.html?slug=${encodeURIComponent(r.slug)}`;
+  const excerpt = (t,n=190) => {
+    const x=String(t||"").replace(/\s+/g," ").trim();
+    return esc(x.length>n?x.slice(0,n)+"…":x);
+  };
+
+  function row(r, cls="home-row"){
+    return `<a class="${cls}" href="${link(r)}">
+      <span class="date">${esc(fmt(r.date))}</span>
+      <span class="title">${esc(r.title)}</span>
+      <span class="theme">${esc(r.theme)}</span>
+      <span class="arrow">→</span>
+    </a>`;
+  }
+
+  function renderPoems(){
+    const feature=document.querySelector("[data-featured-poem]");
+    const list=document.querySelector("[data-home-poem-list]");
+    const p=state.poems[0];
+
+    if(feature){
+      feature.innerHTML=p ? `
+        <div>
+          <div class="micro">${esc(fmt(p.date))} · ${esc(p.theme)}</div>
+          <h3>${esc(p.title)}</h3>
+          <p class="excerpt">${excerpt(p.content,250)}</p>
+          <a class="maroon-link" href="${link(p)}">baca selengkapnya <span>→</span></a>
+        </div>
+        <aside class="featured-aside">
+          <div class="type">PUISI TERBARU</div>
+          <p>${excerpt(p.content,320)}</p>
+        </aside>` :
+        `<p>Belum ada puisi yang diterbitkan.</p>`;
+    }
+    if(list){
+      list.innerHTML=state.poems.slice(1,7).map(r=>row(r)).join("") || "";
+    }
+  }
+
+  function renderJournals(){
+    const box=document.querySelector("[data-journal-list]");
+    if(!box)return;
+    if(!state.journals.length){
+      box.innerHTML=`<article class="journal-card"><div class="micro">BELUM ADA JURNAL</div><h3>Ruang ini masih kosong.</h3><p>Jurnal yang diterbitkan dari Ruang Tulis akan muncul di sini.</p></article>`;
+      return;
+    }
+    box.innerHTML=state.journals.slice(0,4).map(r=>`
+      <article class="journal-card">
+        <div class="micro">${esc(fmt(r.date))} · ${esc(r.theme)}</div>
+        <h3>${esc(r.title)}</h3>
+        <p>${excerpt(r.content,220)}</p>
+        <a class="maroon-link" href="${link(r)}">baca jurnal <span>→</span></a>
+      </article>`).join("");
+  }
+
+  function setupArchive(){
+    const list=document.querySelector("[data-archive-list]");
+    const search=document.querySelector("[data-poem-search]");
+    const buttons=document.querySelectorAll("[data-poem-filter]");
+    if(!list)return;
+    let mode="Semua", q="";
+    const draw=()=>{
+      let rows=state.all;
+      if(mode==="Puisi") rows=state.poems;
+      else if(mode==="Jurnal") rows=state.journals;
+      else if(mode!=="Semua") rows=rows.filter(r=>(r.theme||"").toLowerCase()===mode.toLowerCase());
+      if(q){
+        const x=q.toLowerCase();
+        rows=rows.filter(r=>(r.title+" "+r.theme+" "+r.content).toLowerCase().includes(x));
+      }
+      list.innerHTML=rows.length ? rows.map(r=>row(r,"archive-row")).join("") : "<p>Tidak ada tulisan yang cocok.</p>";
+    };
+    buttons.forEach(b=>b.addEventListener("click",()=>{
+      buttons.forEach(x=>x.classList.remove("active")); b.classList.add("active");
+      mode=b.dataset.poemFilter||"Semua"; draw();
+    }));
+    search?.addEventListener("input",()=>{q=search.value.trim();draw()});
+    draw();
+  }
+
+  function setupRandom(){
+    document.getElementById("randomPost")?.addEventListener("click",()=>{
+      if(!state.all.length)return;
+      const r=state.all[Math.floor(Math.random()*state.all.length)];
+      location.href=link(r);
+    });
+  }
+
+  function setupTheme(){
+    const key="ykb-theme";
+    const btn=document.getElementById("themeToggle");
+    const saved=localStorage.getItem(key);
+    if(saved==="dark")document.body.classList.add("dark");
+    btn?.addEventListener("click",()=>{
+      document.body.classList.toggle("dark");
+      localStorage.setItem(key,document.body.classList.contains("dark")?"dark":"light");
+    });
+  }
+
+  async function load(){
+    const {data,error}=await sb.from("poems").select("*").eq("status","published").order("published_at",{ascending:false,nullsFirst:false});
+    if(error){console.error(error);document.querySelector("[data-featured-poem]")?.replaceChildren(Object.assign(document.createElement("p"),{textContent:"Tulisan belum dapat dimuat."}));return;}
+    state.all=(data||[]).map(normalize);
+    state.poems=state.all.filter(r=>r.type==="puisi");
+    state.journals=state.all.filter(r=>r.type==="jurnal");
+    renderPoems(); renderJournals(); setupArchive(); setupRandom();
+  }
+  setupTheme();
+  load();
+})();
+
+/* V23 mobile menu */
+(() => {
+  const btn = document.getElementById("mobileMenu");
+  const nav = document.getElementById("mobileNav");
+  if (!btn || !nav) return;
+  btn.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "×" : "☰";
+    nav.setAttribute("aria-hidden", String(!open));
+  });
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    nav.classList.remove("open");
+    btn.setAttribute("aria-expanded","false");
+    btn.textContent="☰";
+    nav.setAttribute("aria-hidden","true");
+  }));
+})();

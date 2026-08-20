@@ -4,14 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Arsip — yang kita bicarakan</title>
-<link rel="stylesheet" href="archive-v22.css">
+<link rel="stylesheet" href="archive-v23.css">
 </head>
 <body>
 <header class="site-header">
   <a class="brand" href="index.html">yang kita bicarakan <span>/</span><em>pukul dua dini hari</em></a>
   <nav><a href="index.html#puisi">PUISI</a><a href="index.html#jurnal">JURNAL</a><a class="active" href="arsip.html">ARSIP</a><a href="index.html#tentang">TENTANG</a></nav>
   <button id="themeToggle" aria-label="Ubah tema">◐</button>
+  <button id="mobileMenu" class="mobile-menu-btn" aria-label="Buka menu" aria-expanded="false">☰</button>
 </header>
+<div id="mobileNav" class="mobile-nav" aria-hidden="true">
+  <a href="index.html">BERANDA</a>
+  <a href="index.html#puisi">PUISI</a>
+  <a href="index.html#jurnal">JURNAL</a>
+  <a href="arsip.html">ARSIP</a>
+  <a href="tentang.html">TENTANG</a>
+</div>
+
 
 <main>
 <section class="archive-hero wrap">
@@ -45,6 +54,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-<script src="archive-v22.js"></script>
+<script src="archive-v23.js"></script>
 </body>
 </html>
