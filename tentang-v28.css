@@ -139,29 +139,3 @@ a,button{transition:color .22s ease,background-color .22s ease,border-color .22s
   .signature p{font-size:13px !important;line-height:1.6 !important}
   .signature h2{font-size:26px !important;margin-bottom:20px !important}
 }
-
-/* V28 — TENTANG extra compact mobile */
-@media (max-width:760px){
-  .manifesto{padding-top:24px !important;padding-bottom:28px !important}
-  .manifesto .eyebrow,.eyebrow,.label{font-size:6px !important;letter-spacing:.16em !important}
-  .manifesto h1{font-size:32px !important;line-height:1 !important;letter-spacing:-.035em !important;margin:10px 0 16px !important}
-  .intro{font-size:13px !important;line-height:1.5 !important}
-  .story{padding-top:28px !important;padding-bottom:30px !important}
-  .index{font-size:8px !important;margin-bottom:10px !important}
-  .story h2{font-size:22px !important;line-height:1.1 !important;margin:10px 0 16px !important}
-  .prose{font-size:13px !important;line-height:1.65 !important;text-align:justify !important;text-justify:inter-word !important}
-  .prose p{margin-bottom:13px !important}
-  .quote-section{min-height:210px !important;padding:30px 20px !important}
-  .quote-mark{font-size:90px !important;top:12px !important}
-  blockquote{font-size:17px !important;line-height:1.22 !important}
-  .principles{padding-top:28px !important;padding-bottom:34px !important}
-  .principle-grid{margin-top:14px !important}
-  .principle-grid article{padding:15px 14px !important}
-  .principle-grid h3{font-size:18px !important;margin:12px 0 8px !important}
-  .principle-grid p{font-size:12px !important;line-height:1.55 !important;text-align:justify !important}
-  .signature{padding-top:30px !important;padding-bottom:40px !important}
-  .signature-rule{margin-bottom:16px !important}
-  .signature p{font-size:12px !important;line-height:1.55 !important}
-  .signature h2{font-size:21px !important;line-height:1.1 !important;margin-bottom:14px !important}
-  .signature .name{font-size:8px !important}
-}
