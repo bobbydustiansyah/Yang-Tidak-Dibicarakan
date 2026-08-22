@@ -145,3 +145,48 @@ a,button{transition:color .22s ease,background-color .22s ease,border-color .22s
 /* V30 optional article image */
 .content-image{margin:0 0 2.4rem}.content-image img{display:block;width:100%;max-height:620px;object-fit:cover}.content-image figcaption{margin-top:.6rem;font-size:.78rem;line-height:1.5;opacity:.62;font-style:italic}
 @media(max-width:760px){.content-image{margin-bottom:1.8rem}.content-image img{max-height:420px}}
+
+/* V31 — foto sebagai bagian dari halaman buku */
+.content-image{
+  margin:0 0 3.2rem;
+  padding:0;
+}
+.content-image img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:720px;
+  object-fit:contain;
+  background:rgba(20,18,15,.035);
+  border:1px solid rgba(30,27,23,.10);
+}
+.content-image figcaption{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-top:.72rem;
+  padding-left:2px;
+  color:#777168;
+  font:italic .78rem/1.55 Georgia,"Times New Roman",serif;
+}
+.content-image figcaption:before{
+  content:"—";
+  color:var(--maroon);
+  font-style:normal;
+}
+.dark .content-image img{background:rgba(255,255,255,.035);border-color:rgba(235,228,216,.12)}
+.dark .content-image figcaption{color:#aaa39a}
+
+@media(max-width:760px){
+  .content-image{
+    margin:0 -2px 2.35rem;
+  }
+  .content-image img{
+    width:100%;
+    max-height:none;
+  }
+  .content-image figcaption{
+    font-size:.76rem;
+    margin-top:.62rem;
+  }
+}
