@@ -1,0 +1,207 @@
+:root{--paper:#e4dfd3;--ink:#191714;--muted:#726c63;--line:rgba(30,27,23,.22);--maroon:#691b28;--max:1180px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.7;background:#e4dfd3 url("paper-vintage.jpg") repeat;background-size:900px 900px}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 48%,rgba(70,50,30,.06));z-index:0}
+a{text-decoration:none;color:inherit}.wrap{width:min(var(--max),100%);margin:auto;padding-left:42px;padding-right:42px}
+.site-header{position:sticky;top:0;z-index:20;min-height:70px;padding:12px 42px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(228,223,211,.9);backdrop-filter:blur(12px)}
+.brand{font-size:17px;line-height:1}.brand span{color:var(--maroon);margin:0 4px}.brand em{font-size:10px;color:var(--maroon);letter-spacing:.08em}
+nav{display:flex;gap:27px;font:10px Arial,sans-serif;letter-spacing:.15em}nav a{color:#5f5a52}nav a:hover,nav a.active{color:var(--maroon)}
+#themeToggle{width:35px;height:35px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer}
+.manifesto{position:relative;z-index:1;padding-top:130px;padding-bottom:125px;border-bottom:1px solid var(--line)}
+.eyebrow,.label{font:9px Arial,sans-serif;letter-spacing:.2em;color:var(--maroon)}
+.manifesto h1{font-size:clamp(72px,11vw,150px);font-weight:400;line-height:.78;letter-spacing:-.07em;margin:38px 0}
+.manifesto h1 i{font-style:normal;color:var(--maroon)}
+.intro{max-width:620px;font-size:22px;color:var(--muted);margin:0}
+.story{position:relative;z-index:1;display:grid;grid-template-columns:100px 1fr;gap:30px;padding-top:115px;padding-bottom:115px;border-bottom:1px solid var(--line)}
+.index{font:11px Arial,sans-serif;color:var(--maroon);letter-spacing:.16em;padding-top:5px}
+.story article{max-width:850px}
+.story h2{font-size:clamp(42px,5vw,68px);font-weight:400;line-height:1.02;letter-spacing:-.045em;margin:20px 0 45px;max-width:850px}
+.prose{max-width:650px;font-size:19px;color:#625d55}.prose p{margin:0 0 25px}
+.quote-section{position:relative;z-index:1;min-height:520px;padding:90px 10%;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);overflow:hidden}
+.quote-mark{position:absolute;left:5%;top:40px;font-size:260px;line-height:1;color:rgba(105,27,40,.10)}
+blockquote{position:relative;z-index:1;font-size:clamp(30px,4vw,52px);line-height:1.1;letter-spacing:-.035em;margin:0;max-width:900px;text-align:center}
+.reverse{background:rgba(40,32,25,.025)}
+.principles{position:relative;z-index:1;padding-top:110px;padding-bottom:120px;border-bottom:1px solid var(--line)}
+.principle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ink);margin-top:45px;border:1px solid var(--ink)}
+.principle-grid article{min-height:310px;padding:34px;background:rgba(238,234,225,.58)}
+.principle-grid span{color:var(--maroon);font:10px Arial,sans-serif;letter-spacing:.14em}
+.principle-grid h3{font-size:32px;font-weight:400;line-height:1.05;margin:40px 0 18px}.principle-grid p{color:#6c665e}
+.signature{position:relative;z-index:1;padding-top:120px;padding-bottom:145px;text-align:center}
+.signature-rule{width:70px;height:1px;background:var(--maroon);margin:0 auto 40px}
+.signature p{font-size:18px;color:#726c63;margin:0 0 28px}
+.signature h2{font-size:clamp(38px,5vw,62px);font-weight:400;line-height:1.02;letter-spacing:-.04em;margin:0 0 35px}
+.signature .name{font:10px Arial,sans-serif;letter-spacing:.15em;color:var(--maroon)}
+.footer{position:relative;z-index:1;border-top:1px solid var(--line);padding-top:28px;padding-bottom:35px;display:flex;justify-content:space-between;font:9px Arial,sans-serif;letter-spacing:.12em;color:#706a62}
+.footer strong{font-family:Georgia,serif;font-size:14px;letter-spacing:0;color:var(--ink);margin-right:10px}.footer em{font-style:normal;color:var(--maroon)}
+.footer a:hover{color:var(--maroon)}
+.dark{--paper:#171615;--ink:#ece7dc;--muted:#aaa39a;--line:rgba(235,228,216,.2)}
+body.dark{background-color:#171615;background-blend-mode:multiply}.dark .site-header{background:rgba(23,22,21,.92)}
+.dark nav a,.dark .intro,.dark .prose,.dark .principle-grid p,.dark .signature p{color:#aaa39a}
+.dark .principle-grid article{background:rgba(28,27,25,.82)}.dark .reverse{background:rgba(255,255,255,.018)}
+@media(max-width:760px){
+ .wrap{padding-left:22px;padding-right:22px}.site-header{padding:12px 22px}nav{display:none}
+ .manifesto{padding-top:85px;padding-bottom:80px}.manifesto h1{font-size:70px}.intro{font-size:18px}
+ .story{display:block;padding-top:75px;padding-bottom:75px}.index{margin-bottom:25px}.story h2{font-size:43px;margin-bottom:35px}.prose{font-size:18px}
+ .quote-section{min-height:410px;padding:60px 25px}.quote-mark{font-size:160px;left:5%;top:35px}blockquote{font-size:31px}
+ .principles{padding-top:75px;padding-bottom:80px}.principle-grid{grid-template-columns:1fr}.principle-grid article{min-height:auto}
+ .signature{padding-top:80px;padding-bottom:100px}.signature h2{font-size:40px}
+ .footer{padding-left:22px;padding-right:22px;flex-direction:column;gap:10px}
+}
+/* V22 final polish */
+a,button{transition:color .22s ease,background-color .22s ease,border-color .22s ease,transform .22s ease}
+.story h2,.manifesto h1,blockquote,.signature h2{font-kerning:normal;text-rendering:optimizeLegibility}
+
+/* V23 — mobile navigation */
+.mobile-menu-btn{display:none;border:1px solid var(--line);background:transparent;color:var(--ink);
+  width:36px;height:36px;border-radius:50%;font:18px Arial,sans-serif;line-height:1;cursor:pointer}
+.mobile-nav{display:none}
+@media(max-width:760px){
+  .site-header,.reader-header{padding-left:18px;padding-right:18px}
+  .mobile-menu-btn{display:inline-flex;align-items:center;justify-content:center}
+  .mobile-nav{
+    position:fixed;left:0;right:0;top:70px;z-index:19;
+    display:flex;flex-direction:column;padding:12px 22px 20px;
+    border-bottom:1px solid var(--line);
+    background:rgba(228,223,211,.97);backdrop-filter:blur(14px);
+    transform:translateY(-12px);opacity:0;pointer-events:none;
+    transition:opacity .2s ease,transform .2s ease;
+  }
+  .mobile-nav.open{transform:translateY(0);opacity:1;pointer-events:auto}
+  .mobile-nav a{padding:14px 0;border-bottom:1px solid var(--line);
+    color:var(--ink);font:10px Arial,sans-serif;letter-spacing:.18em}
+  .mobile-nav a:last-child{border-bottom:0}
+  body.dark .mobile-nav{background:rgba(23,22,21,.98)}
+}
+
+/* V25 — CSS-only mobile navigation */
+.mobile-bottom-nav{display:none}
+@media(max-width:760px){
+  body{padding-bottom:74px}
+  .mobile-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+    display:grid;grid-template-columns:repeat(5,1fr);padding:9px 6px calc(9px + env(safe-area-inset-bottom));
+    background:rgba(228,223,211,.98);border-top:1px solid var(--line);
+    box-shadow:0 -6px 20px rgba(0,0,0,.07);backdrop-filter:blur(14px)}
+  .mobile-bottom-nav a{text-align:center;color:var(--ink);text-decoration:none;
+    font:9px/1.2 Arial,sans-serif;letter-spacing:.09em;padding:9px 2px}
+  body.dark .mobile-bottom-nav{background:rgba(23,22,21,.98)}
+  body.dark .mobile-bottom-nav a{color:var(--ink)}
+}
+
+/* V26 — Tentang lebih ringkas + paragraf rata kiri-kanan */
+@media(max-width:760px){
+  .manifesto{padding-top:38px;padding-bottom:42px}
+  .manifesto .eyebrow{font-size:8px;letter-spacing:.18em}
+  .manifesto h1{font-size:48px;line-height:.92;letter-spacing:-.055em;margin:20px 0 24px}
+  .intro{font-size:16px;line-height:1.55;max-width:100%}
+
+  .story{padding-top:46px;padding-bottom:46px}
+  .index{font-size:9px;margin-bottom:14px}
+  .story .label,.principles .label{font-size:8px;letter-spacing:.16em}
+  .story h2{font-size:31px;line-height:1.08;letter-spacing:-.03em;margin:14px 0 24px}
+  .prose{max-width:none;font-size:16px;line-height:1.75;color:var(--muted);text-align:justify;text-justify:inter-word}
+  .prose p{margin:0 0 18px}
+
+  .quote-section{min-height:300px;padding:45px 28px}
+  .quote-mark{font-size:120px;top:18px}
+  blockquote{font-size:24px;line-height:1.16}
+
+  .principles{padding-top:48px;padding-bottom:55px}
+  .principle-grid{margin-top:25px}
+  .principle-grid article{padding:24px 20px}
+  .principle-grid h3{font-size:25px;margin:22px 0 12px}
+  .principle-grid p{font-size:15px;line-height:1.65;margin:0;text-align:justify}
+
+  .signature{padding-top:55px;padding-bottom:70px}
+  .signature-rule{margin-bottom:24px}
+  .signature p{font-size:15px;line-height:1.6}
+  .signature h2{font-size:30px;line-height:1.08;margin-bottom:24px}
+  .signature .name{font-size:9px}
+}
+
+/* V27 — Tentang: compact typography, especially on mobile */
+@media (max-width:760px){
+  .manifesto h1{font-size:38px !important;line-height:.98 !important;letter-spacing:-.04em !important;margin:14px 0 20px !important}
+  .manifesto .eyebrow,.eyebrow,.label{font-size:7px !important;letter-spacing:.17em !important}
+  .intro{font-size:14px !important;line-height:1.6 !important}
+  .manifesto{padding-top:30px !important;padding-bottom:36px !important}
+  .story{padding-top:38px !important;padding-bottom:38px !important}
+  .story h2{font-size:26px !important;line-height:1.12 !important;margin:12px 0 20px !important}
+  .prose{font-size:14px !important;line-height:1.75 !important;text-align:justify !important;text-justify:inter-word !important}
+  .prose p{margin-bottom:16px !important}
+  .quote-section{min-height:250px !important;padding:38px 24px !important}
+  blockquote{font-size:20px !important;line-height:1.2 !important}
+  .principles{padding-top:38px !important;padding-bottom:45px !important}
+  .principle-grid{margin-top:20px !important}
+  .principle-grid article{padding:20px 18px !important}
+  .principle-grid h3{font-size:21px !important;margin:18px 0 10px !important}
+  .principle-grid p{font-size:13px !important;line-height:1.65 !important;text-align:justify !important}
+  .signature{padding-top:42px !important;padding-bottom:55px !important}
+  .signature p{font-size:13px !important;line-height:1.6 !important}
+  .signature h2{font-size:26px !important;margin-bottom:20px !important}
+}
+
+/* V29 — Tentang: lebih kecil dan lebih ringan di HP */
+@media (max-width: 760px){
+  h1{
+    font-size: clamp(2.45rem, 11.5vw, 3.7rem) !important;
+    line-height: .98 !important;
+    letter-spacing: -.035em;
+  }
+  .about-hero h1,
+  .about-page h1,
+  .tentang-page h1{
+    font-size: clamp(2.45rem, 11.5vw, 3.7rem) !important;
+  }
+  p{
+    font-size: .98rem !important;
+    line-height: 1.72 !important;
+  }
+  .quote,
+  blockquote,
+  .about-quote{
+    font-size: 1.02rem !important;
+    line-height: 1.65 !important;
+  }
+}
+
+
+/* V30 — Tentang seperti biografi kecil di halaman akhir buku */
+@media (max-width:760px){
+  .wrap{padding-left:40px !important;padding-right:40px !important}
+  .manifesto{padding-top:62px !important;padding-bottom:48px !important}
+  .manifesto .eyebrow,.story .label,.principles .label{font-size:7px !important;letter-spacing:.20em !important}
+  .manifesto h1{font-size:27px !important;line-height:1.08 !important;letter-spacing:-.025em !important;margin:20px 0 28px !important}
+  .intro{font-size:13px !important;line-height:1.72 !important;color:var(--muted) !important}
+
+  .story{padding-top:48px !important;padding-bottom:48px !important}
+  .index{font-size:8px !important;margin-bottom:13px !important}
+  .story h2{font-size:20px !important;line-height:1.25 !important;letter-spacing:-.015em !important;margin:12px 0 20px !important}
+  .prose{font-size:13px !important;line-height:1.78 !important;text-align:justify !important;text-justify:inter-word !important;color:var(--muted) !important}
+  .prose p{margin-bottom:15px !important}
+
+  .quote-section{min-height:220px !important;padding:34px 42px !important}
+  .quote-mark{font-size:90px !important;top:20px !important;left:8% !important}
+  blockquote{font-size:17px !important;line-height:1.42 !important;letter-spacing:0 !important}
+
+  .principles{padding-top:50px !important;padding-bottom:50px !important}
+  .principle-grid{margin-top:20px !important}
+  .principle-grid article{padding:18px 16px !important}
+  .principle-grid h3{font-size:17px !important;line-height:1.2 !important;margin:15px 0 9px !important}
+  .principle-grid p{font-size:12.5px !important;line-height:1.7 !important;text-align:justify !important}
+
+  .signature{padding-top:50px !important;padding-bottom:65px !important}
+  .signature-rule{width:42px !important;margin-bottom:24px !important}
+  .signature p{font-size:12.5px !important;line-height:1.7 !important}
+  .signature h2{font-size:20px !important;line-height:1.25 !important;margin-bottom:18px !important}
+  .signature .name{font-size:8px !important;letter-spacing:.16em !important}
+
+  .footer{padding-left:40px !important;padding-right:40px !important;font-size:8px !important}
+  .footer strong{font-size:11px !important}
+}
+
+
+/* V34 — Foto penulis opsional di bawah judul Tentang */
+.author-portrait{margin:0 0 28px;max-width:230px}
+.author-portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;filter:saturate(.82) contrast(.98);border:1px solid var(--line,rgba(0,0,0,.14))}
+.author-portrait figcaption{margin-top:8px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-style:italic}
+@media(max-width:760px){.author-portrait{max-width:155px;margin:0 0 25px}.author-portrait img{aspect-ratio:4/5}.author-portrait figcaption{font-size:7px;margin-top:7px;letter-spacing:.15em}}
